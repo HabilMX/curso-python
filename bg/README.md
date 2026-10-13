@@ -44,7 +44,7 @@
 
 В края на всеки урок има упражнения с техните решения и раздел „За допълнително четене“; източниците на това, което се твърди, са свързани в текста, там където се използват. А [дневникът](https://github.com/HabilMX/curso-python/blob/main/bg/bitacora.md) е твой: записвай там това, което ти е костало усилие.
 
-**За по-нататъшно четене:** в блога на Hábil, [тестове, които хващат грешки](https://www.habil.mx/bg/blog/tests-that-catch-errors-coverage-quality-gate/) и [сигурност на API](https://www.habil.mx/bg/blog/api-security-cto-identity-gateway-tokens/). А в курсовете: ако вече умееш да програмираш и искаш съвременна Java, виж [курса по Java](https://www.habil.mx/bg/courses/java/).
+**За по-нататъшно четене:** в блога на Hábil, [тестове, които хващат грешки](https://www.habil.mx/bg/blog/tests-that-catch-errors-coverage-quality-gate/) и [сигурност на API](https://www.habil.mx/bg/blog/api-security-cto-identity-gateway-tokens/).
 
 ## Три критерия, които минават през целия курс
 

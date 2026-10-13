@@ -63,7 +63,7 @@ Lo que la tabla promete por lección es lo que la lección trae.
 
 **Lo que este curso NO enseña, a propósito:** Django, Flask y FastAPI (son cursos aparte), cuadernos de Jupyter, `requests` (el curso usa `httpx`, que sirve igual en código síncrono y asíncrono), `setup.py`, el formato `%` y `.format()` (hay f-strings), herencia profunda y metaclases, los hilos a mano y los procesos. Quien termine estas once lecciones los aprende cuando los necesite.
 
-**Para seguir leyendo en el blog de Hábil:** [pruebas que atrapan errores](https://www.habil.mx/es/blog/pruebas-que-atrapan-errores-cobertura-quality-gate/) y [seguridad de APIs](https://www.habil.mx/es/blog/seguridad-apis-cto-identidad-gateway-tokens/). **Y en los otros cursos:** el mismo `revisor` está en [Go](https://www.habil.mx/es/cursos/go/), [Rust](https://www.habil.mx/es/cursos/rust/), [TypeScript](https://www.habil.mx/es/cursos/typescript/) y [Java](https://www.habil.mx/es/cursos/java/); si ya sabes programar y buscas Java moderno, ve directo al de Java.
+**Para seguir leyendo en el blog de Hábil:** [pruebas que atrapan errores](https://www.habil.mx/es/blog/pruebas-que-atrapan-errores-cobertura-quality-gate/) y [seguridad de APIs](https://www.habil.mx/es/blog/seguridad-apis-cto-identidad-gateway-tokens/). **Y en los otros cursos:** el mismo `revisor` está en [Go](https://www.habil.mx/es/cursos/go/), [Rust](https://www.habil.mx/es/cursos/rust/) y [TypeScript](https://www.habil.mx/es/cursos/typescript/).
 
 ## La plantilla de cada lección
 

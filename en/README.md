@@ -44,7 +44,7 @@ It starts in Lesson 2 with a header and a single service, and grows in each less
 
 At the end of each lesson there are exercises with their solutions and a “Further reading” section; the sources of what is claimed are linked in the text, where they are used. And the [logbook](https://github.com/HabilMX/curso-python/blob/main/en/bitacora.md) is yours: write down there what was hard for you.
 
-**To keep reading:** on Hábil's blog, [tests that catch errors](https://www.habil.mx/en/blog/tests-that-catch-errors-coverage-quality-gate/) and [API security](https://www.habil.mx/en/blog/api-security-cto-identity-gateway-tokens/). And in the courses: if you already know how to program and want modern Java, the [Java course](https://www.habil.mx/en/courses/java/).
+**To keep reading:** on Hábil's blog, [tests that catch errors](https://www.habil.mx/en/blog/tests-that-catch-errors-coverage-quality-gate/) and [API security](https://www.habil.mx/en/blog/api-security-cto-identity-gateway-tokens/).
 
 ## Three criteria that run through the whole course
 
