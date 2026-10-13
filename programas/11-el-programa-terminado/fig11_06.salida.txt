@@ -1,0 +1,9 @@
+SERVICIO    ESTADO    TIEMPO  DETALLE
+catalogo    ARRIBA       0ms  200
+lento       LENTO       1.1s  200
+basura      CAIDO          —  error de red
+caido       CAIDO        0ms  503
+colgado     CAIDO          —  tiempo agotado
+pagos       ARRIBA       0ms  200
+
+6 servicios · 2 arriba · 1 lento · 3 caídos · promedio 275ms

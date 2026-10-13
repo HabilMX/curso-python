@@ -1,0 +1,15 @@
+[[servicios]]
+nombre = "catalogo"
+url = "https://catalogo.example"
+
+[[servicios]]
+nombre = "inventario"
+url = "https://inventario.example"
+
+[[servicios]]
+nombre = "pagos"
+url = "https://pagos.example"
+
+[[servicios]]
+nombre = "reportes"
+url = "https://reportes.example"

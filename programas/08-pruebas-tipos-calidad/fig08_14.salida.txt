@@ -1,0 +1,32 @@
+$ python fig08_14.py
+['catalogo']
+['catalogo', 'pagos']
+$ ruff check --select E,F,I,B,UP --output-format concise fig08_14.py
+fig08_14.py:2:1: E401 [*] Multiple imports on one line
+fig08_14.py:2:1: I001 [*] Import block is un-sorted or un-formatted
+fig08_14.py:2:8: F401 [*] `os` imported but unused
+fig08_14.py:2:12: F401 [*] `sys` imported but unused
+fig08_14.py:3:21: F401 [*] `pathlib.Path` imported but unused
+fig08_14.py:5:29: B006 Do not use mutable data structures for argument defaults
+fig08_14.py:10:21: E711 Comparison to `None` should be `cond is None`
+Found 7 errors.
+[*] 5 fixable with the `--fix` option (2 hidden fixes can be enabled with the `--unsafe-fixes` option).
+$ ruff format --check fig08_14.py
+unformatted: File would be reformatted
+  --> fig08_14.py:5:1
+   |
+4  |
+5  +
+6  | def agregar(servicio, lista=[]):
+7  |     lista.append(servicio)
+8  |     return lista
+9  |
+10 +
+11 | def es_nulo(valor):
+12 |     return valor == None
+13 |
+14 +
+15 | print(agregar("catalogo"))
+   |
+
+1 file would be reformatted

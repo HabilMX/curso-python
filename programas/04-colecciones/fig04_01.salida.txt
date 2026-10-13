@@ -1,0 +1,10 @@
+catalogo reportes
+reportes pagos
+['inventario', 'pagos']
+4
+True False
+['catalogo', 'inventario', 'pagos', 'reportes', 'facturacion']
+facturacion 4
+[87, 142, 2300] [142, 2300, 87]
+[87, 142, 2300]
+2529 87 2300

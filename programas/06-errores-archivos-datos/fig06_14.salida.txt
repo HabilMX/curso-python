@@ -1,0 +1,3 @@
+mensaje: Expecting ',' delimiter
+línea 4, columna 3
+completo: Expecting ',' delimiter: line 4 column 3 (char 43)

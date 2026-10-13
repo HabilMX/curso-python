@@ -1,0 +1,6 @@
+# Versiones fijadas de las herramientas del curso (medidas en PyPI el 7-oct-2026).
+# Un cambio aquí se hace en una sola lección (la 7) y se anuncia al resto.
+httpx==0.28.1
+pytest==9.1.1
+ruff==0.16.10
+mypy==2.4.0

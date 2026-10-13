@@ -1,0 +1,13 @@
+servicio 1: entra
+servicio 2: entra
+servicio 1: sale
+servicio 2: sale
+servicio 3: entra
+servicio 4: entra
+servicio 3: sale
+servicio 4: sale
+servicio 5: entra
+servicio 6: entra
+servicio 5: sale
+servicio 6: sale
+seis servicios, de dos en dos: 1.5 s

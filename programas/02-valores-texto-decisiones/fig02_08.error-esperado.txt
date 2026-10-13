@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "fig02_08.py", line 4, in <module>
+    print("respondió en " + tiempo_ms)
+          ~~~~~~~~~~~~~~~~^~~~~~~~~~~
+TypeError: can only concatenate str (not "int") to str

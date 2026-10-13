@@ -1,0 +1,2 @@
+usage: fig07_02.py [-h] [--config CONFIG] [--formato {tabla,json}]
+fig07_02.py: error: unrecognized arguments: --verbose

@@ -1,0 +1,7 @@
+Estado.LENTO
+LENTO LENTO
+Estado.CAIDO
+True False
+ARRIBA
+LENTO
+CAIDO

@@ -1,0 +1,33 @@
+$ ruff check --select E,F,I,B,UP --fix --diff fig08_14.py
+--- fig08_14.py
++++ fig08_14.py
+@@ -1,6 +1,4 @@
+ # fig08_14.py
+-import os, sys
+-from pathlib import Path
+ 
+ def agregar(servicio, lista=[]):
+     lista.append(servicio)
+
+Would fix 4 errors (2 additional fixes available with `--unsafe-fixes`).
+$ ruff format --diff fig08_14.py
+--- fig08_14.py
++++ fig08_14.py
+@@ -2,12 +2,15 @@
+ import os, sys
+ from pathlib import Path
+ 
++
+ def agregar(servicio, lista=[]):
+     lista.append(servicio)
+     return lista
+ 
++
+ def es_nulo(valor):
+     return valor == None
+ 
++
+ print(agregar("catalogo"))
+ print(agregar("pagos"))
+
+1 file would be reformatted

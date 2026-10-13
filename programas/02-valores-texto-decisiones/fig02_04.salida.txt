@@ -1,0 +1,8 @@
+inventario respondió en 2300 ms
+el doble: 4600
+en segundos: 2.3
+[inventario  ]
+[  inventario]
+[    87]
+[2.3s]
+[1.0s]

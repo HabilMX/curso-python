@@ -1,0 +1,3 @@
+ARRIBA -> verde
+LENTO -> amarillo
+CAIDO -> rojo

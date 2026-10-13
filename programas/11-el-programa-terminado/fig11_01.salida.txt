@@ -1,0 +1,3 @@
+este renglón es el reporte: va a la salida estándar
+WARNING demo: aviso: inventario tardó 2300 ms
+DEBUG demo: ahora sí aparece, porque subí el detalle

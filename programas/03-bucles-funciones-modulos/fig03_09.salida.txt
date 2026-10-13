@@ -1,0 +1,5 @@
+87ms
+None
+87ms
+<class 'NoneType'>
+<class 'str'>

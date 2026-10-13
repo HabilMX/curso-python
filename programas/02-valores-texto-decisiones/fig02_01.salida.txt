@@ -1,0 +1,6 @@
+inventario <class 'str'>
+200 <class 'int'>
+2300 <class 'int'>
+2.3 <class 'float'>
+True <class 'bool'>
+None <class 'NoneType'>

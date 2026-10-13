@@ -1,0 +1,36 @@
+name: Verificar el curso
+
+# Cada cambio se comprueba aqui, y la corrida es publica: cualquiera puede
+# abrirla y ver el resultado de cada paso.
+#
+# 🔴 ESTE ARCHIVO SOLO CORRE LO QUE YA EXISTE Y FUNCIONA. Un paso que invoque un
+# guion inexistente pone la corrida en rojo desde el primer dia y entrena a todos
+# a ignorar el rojo, que es peor que no tener verificacion. Los cinco pasos de
+# abajo se probaron uno por uno antes de escribirlos aqui.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar que el revisor de material publicable se detecta a si mismo
+        run: ./verificar-publicable.sh --probar
+
+      - name: Revisar que no haya material que no debe publicarse
+        run: ./verificar-publicable.sh
+
+      - name: La profundidad se mide (piso de 3,000 palabras por leccion, mediana de 4,000)
+        run: herramientas/medir-profundidad.sh
+
+      - name: Cada leccion cumple la plantilla
+        run: herramientas/verificar-plantilla.sh
+
+      - name: Las traducciones corresponden al español
+        run: herramientas/verificar-traducciones.sh

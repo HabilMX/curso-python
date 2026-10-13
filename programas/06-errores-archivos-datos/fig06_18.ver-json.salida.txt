@@ -1,0 +1,39 @@
+{
+  "servicios": [
+    {
+      "nombre": "catalogo",
+      "url": "https://catalogo.example",
+      "estado": "ARRIBA",
+      "tiempo_ms": 142,
+      "detalle": "200"
+    },
+    {
+      "nombre": "inventario",
+      "url": "https://inventario.example",
+      "estado": "LENTO",
+      "tiempo_ms": 2300,
+      "detalle": "200"
+    },
+    {
+      "nombre": "pagos",
+      "url": "https://pagos.example",
+      "estado": "ARRIBA",
+      "tiempo_ms": 87,
+      "detalle": "200"
+    },
+    {
+      "nombre": "reportes",
+      "url": "https://reportes.example",
+      "estado": "CAIDO",
+      "tiempo_ms": null,
+      "detalle": "sin conexión"
+    }
+  ],
+  "resumen": {
+    "total": 4,
+    "arriba": 2,
+    "lento": 1,
+    "caido": 1,
+    "promedio_ms": 843
+  }
+}

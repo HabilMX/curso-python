@@ -1,0 +1,13 @@
+$ pytest -q fig08_05.py
+.......                                                                  [100%]
+7 passed in 0.01s
+$ pytest -q --collect-only fig08_05.py
+fig08_05.py::test_clasificar[200-142-ARRIBA]
+fig08_05.py::test_clasificar[200-999-ARRIBA]
+fig08_05.py::test_clasificar[200-1000-LENTO]
+fig08_05.py::test_clasificar[200-2300-LENTO]
+fig08_05.py::test_clasificar[503-95-CAIDO]
+fig08_05.py::test_clasificar[404-50-CAIDO]
+fig08_05.py::test_clasificar[None-None-CAIDO]
+
+7 tests collected in 0.00s

@@ -1,0 +1,6 @@
+['catalogo', 'inventario', 'pagos', 'reportes']
+4
+catalogo
+reportes
+5
+facturacion

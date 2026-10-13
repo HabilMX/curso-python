@@ -1,0 +1,3 @@
+catalogo respondió 200
+facturacion respondió con un error 503
+reportes no se pudo conectar: ConnectionRefusedError

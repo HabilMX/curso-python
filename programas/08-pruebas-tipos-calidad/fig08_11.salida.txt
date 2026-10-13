@@ -1,0 +1,5 @@
+$ python fig08_11.py
+0.087
+None
+$ mypy fig08_11.py
+Success: no issues found in 1 source file

@@ -1,0 +1,10 @@
+{
+  "nombre": "reportes",
+  "estado": "CAIDO",
+  "tiempo_ms": null,
+  "detalle": "sin conexión",
+  "activo": true
+}
+True True
+"sin conexi\u00f3n"
+"sin conexión"

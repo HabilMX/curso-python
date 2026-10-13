@@ -1,0 +1,2 @@
+error de configuración: 'timeout_ms' debe ser un entero, llegó 'cinco mil'
+causa original: invalid literal for int() with base 10: 'cinco mil'

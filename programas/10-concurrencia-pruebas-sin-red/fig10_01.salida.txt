@@ -1,0 +1,5 @@
+catalogo: respondió
+inventario: respondió
+pagos: respondió
+reportes: respondió
+en serie: 1.1 s

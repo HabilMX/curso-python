@@ -1,0 +1,4 @@
+nota.txt .txt True
+False
+datos/servicios.toml
+['Revisión de las 9:00', 'reportes: sin conexión']

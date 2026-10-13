@@ -1,0 +1,4 @@
+catalogo esperó 0.5 s
+inventario esperó 0.5 s
+pagos esperó 0.5 s
+en serie tarda la suma, 1.5 s o más: True

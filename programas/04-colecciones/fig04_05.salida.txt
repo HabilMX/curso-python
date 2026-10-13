@@ -1,0 +1,14 @@
+87
+4
+True False
+None
+sin dato
+None
+True None None
+catalogo 142
+inventario 2300
+pagos 87
+reportes None
+facturacion 95
+['catalogo', 'inventario', 'pagos', 'reportes', 'facturacion']
+[142, 2300, 87, None, 95]

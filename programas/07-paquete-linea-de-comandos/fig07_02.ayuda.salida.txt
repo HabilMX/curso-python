@@ -1,0 +1,8 @@
+usage: fig07_02.py [-h] [--config CONFIG] [--formato {tabla,json}]
+
+Demostración de argparse.
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG
+  --formato {tabla,json}

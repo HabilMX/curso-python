@@ -1,0 +1,4 @@
+  File "fig02_09.py", line 3
+    if codigo >= 400
+                    ^
+SyntaxError: expected ':'

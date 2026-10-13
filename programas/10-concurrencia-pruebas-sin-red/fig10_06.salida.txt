@@ -1,0 +1,4 @@
+catalogo: terminó
+inventario: cancelada
+falló: reportes: sin conexión
+fin

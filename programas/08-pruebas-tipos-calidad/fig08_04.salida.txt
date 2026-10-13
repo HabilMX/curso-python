@@ -1,0 +1,16 @@
+$ pytest -q fig08_04.py
+...                                                                      [100%]
+3 passed in 0.00s
+$ echo $?
+0
+$ pytest -q --collect-only fig08_04.py
+fig08_04.py::test_999_ms_es_arriba
+fig08_04.py::test_1000_ms_es_lento
+fig08_04.py::test_un_503_es_caido
+
+3 tests collected in 0.00s
+$ pytest -q -k nombre_que_no_existe fig08_04.py
+
+3 deselected in 0.00s
+$ echo $?
+5

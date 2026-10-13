@@ -1,0 +1,31 @@
+  + Exception Group Traceback (most recent call last):
+  |   File "fig10_09.py", line 15, in <module>
+  |     asyncio.run(main())
+  |     ~~~~~~~~~~~^^^^^^^^
+  |   File "asyncio/runners.py", line 205, in run
+  |     return runner.run(main)
+  |            ~~~~~~~~~~^^^^^^
+  |   File "asyncio/runners.py", line 128, in run
+  |     return self._loop.run_until_complete(task)
+  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  |   File "asyncio/base_events.py", line 720, in run_until_complete
+  |     return future.result()
+  |            ~~~~~~~~~~~~~^^
+  |   File "fig10_09.py", line 10, in main
+  |     async with asyncio.TaskGroup() as grupo:
+  |                ~~~~~~~~~~~~~~~~~^^
+  |   File "asyncio/taskgroups.py", line 72, in __aexit__
+  |     return await self._aexit(et, exc)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "asyncio/taskgroups.py", line 174, in _aexit
+  |     raise BaseExceptionGroup(
+  |     ...<2 lines>...
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "fig10_09.py", line 6, in promedio
+    |     return sum(tiempos_ms) / len(tiempos_ms)
+    |            ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+    | ZeroDivisionError: division by zero
+    +------------------------------------

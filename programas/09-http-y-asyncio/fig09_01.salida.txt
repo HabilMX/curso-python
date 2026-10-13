@@ -1,0 +1,4 @@
+200 OK
+b'ok'
+ok
+tardó 142 ms o más: True

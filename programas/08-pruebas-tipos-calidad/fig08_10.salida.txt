@@ -1,0 +1,7 @@
+$ python fig08_10.py
+0.087
+se rompió: unsupported operand type(s) for /: 'NoneType' and 'int'
+$ mypy fig08_10.py
+fig08_10.py:3: error: Unsupported operand types for / ("None" and "int")  [operator]
+fig08_10.py:3: note: Left operand is of type "int | None"
+Found 1 error in 1 file (checked 1 source file)

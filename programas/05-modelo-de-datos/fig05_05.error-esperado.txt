@@ -1,0 +1,4 @@
+  File "fig05_05.py", line 7
+    case LIMITE:
+         ^^^^^^
+SyntaxError: name capture 'LIMITE' makes remaining patterns unreachable

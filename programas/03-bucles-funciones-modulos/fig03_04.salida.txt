@@ -1,0 +1,8 @@
+0 catalogo
+1 inventario
+2 pagos
+3 reportes
+1. catalogo
+2. inventario
+3. pagos
+4. reportes

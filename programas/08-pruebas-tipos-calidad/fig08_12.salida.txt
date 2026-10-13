@@ -1,0 +1,8 @@
+$ python fig08_12.py
+ARRIBA -> verde
+LENTO -> amarillo
+CAIDO -> rojo
+DEGRADADO -> None
+$ mypy fig08_12.py
+fig08_12.py:12: error: Missing return statement  [return]
+Found 1 error in 1 file (checked 1 source file)

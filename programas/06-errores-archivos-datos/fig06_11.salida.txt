@@ -1,0 +1,3 @@
+{'servicios': [{'nombre': 'catalogo', 'url': 'https://catalogo.example'}, {'nombre': 'notificaciones', 'url': 'https://notificaciones.example', 'timeout_ms': 1000}]}
+notificaciones 1000 <class 'int'>
+None

@@ -1,0 +1,7 @@
+0
+1
+2
+0 catalogo 142
+1 inventario 2300
+2 pagos 87
+3 reportes None

@@ -1,0 +1,10 @@
+catalogo: empieza
+inventario: empieza
+pagos: empieza
+reportes: empieza
+pagos: respondió
+reportes: respondió
+catalogo: respondió
+inventario: respondió
+a la vez: 0.5 s
+['catalogo', 'inventario', 'pagos', 'reportes']

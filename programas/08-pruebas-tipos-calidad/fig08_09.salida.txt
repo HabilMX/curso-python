@@ -1,0 +1,5 @@
+$ python fig08_09.py
+142142
+$ mypy fig08_09.py
+fig08_09.py:6: error: Argument 1 to "doble" has incompatible type "str"; expected "int"  [arg-type]
+Found 1 error in 1 file (checked 1 source file)

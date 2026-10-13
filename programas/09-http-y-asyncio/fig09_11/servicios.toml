@@ -1,0 +1,15 @@
+[[servicios]]
+nombre = "catalogo"
+url = "http://127.0.0.1:8099/catalogo"
+
+[[servicios]]
+nombre = "inventario"
+url = "http://127.0.0.1:8099/inventario"
+
+[[servicios]]
+nombre = "pagos"
+url = "http://127.0.0.1:8099/pagos"
+
+[[servicios]]
+nombre = "reportes"
+url = "http://127.0.0.1:8098/"

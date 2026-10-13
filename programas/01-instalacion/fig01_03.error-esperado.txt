@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "fig01_03.py", line 2, in <module>
+    pirnt("hola")
+    ^^^^^
+NameError: name 'pirnt' is not defined. Did you mean: 'print'?

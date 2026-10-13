@@ -1,0 +1,2 @@
+SERVICIO    ESTADO    TIEMPO  DETALLE
+inventario  LENTO       2.3s  200

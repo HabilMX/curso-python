@@ -1,0 +1,6 @@
+True
+False
+False
+código: 503
+<class 'str'>
+<class 'int'>

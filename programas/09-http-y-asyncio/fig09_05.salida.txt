@@ -1,0 +1,2 @@
+tiempo límite global: None
+se acabó el tiempo: timed out

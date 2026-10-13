@@ -1,0 +1,12 @@
+# 🔴 LO QUE NO SALE AL PUBLICAR. `git archive` respeta `export-ignore`, asi que
+# estos archivos se quedan en GitLab y NO viajan a la copia publica de GitHub.
+#
+# Por que asi y no «acordarse de borrarlos»: la publicacion la hace una persona
+# o un agente distinto cada vez, y un paso que depende de la memoria se salta.
+# Aqui el mecanismo lo hace el propio `git archive` y se puede COMPROBAR antes
+# de publicar (`git archive develop | tar -t | grep '_'`).
+#
+# ⚠️ Estos archivos SI los revisa `verificar-publicable.sh` —decision de la PO,
+# 7-oct-2026—: se miran como el resto del material y solo se excluyen del paquete
+# que se publica.
+es/_*.md export-ignore

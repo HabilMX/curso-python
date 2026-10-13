@@ -1,0 +1,6 @@
+200 142
+código 200, tiempo 142, error None
+3
+catalogo respondió en 142ms
+pagos respondió en 87ms
+<class 'tuple'> <class 'int'>

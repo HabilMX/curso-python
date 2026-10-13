@@ -1,0 +1,5 @@
+<coroutine object saludar at 0x...>
+fig09_07.py:6: RuntimeWarning: coroutine 'saludar' was never awaited
+  print(saludar())
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+listo

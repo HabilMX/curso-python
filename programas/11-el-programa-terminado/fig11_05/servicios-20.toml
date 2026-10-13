@@ -1,0 +1,79 @@
+[[servicios]]
+nombre = "servicio01"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio02"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio03"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio04"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio05"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio06"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio07"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio08"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio09"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio10"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio11"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio12"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio13"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio14"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio15"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio16"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio17"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio18"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio19"
+url = "http://127.0.0.1:8099/espera/500"
+
+[[servicios]]
+nombre = "servicio20"
+url = "http://127.0.0.1:8099/espera/500"

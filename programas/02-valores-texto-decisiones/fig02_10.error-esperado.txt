@@ -1,0 +1,4 @@
+  File "fig02_10.py", line 4
+    print("CAIDO")
+    ^^^^^
+IndentationError: expected an indented block after 'if' statement on line 3

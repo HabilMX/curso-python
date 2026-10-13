@@ -1,0 +1,5 @@
+Servicio(nombre='catalogo', url='https://catalogo.example', timeout_ms=5000)
+1000
+catalogo 5000
+True False
+Servicio(nombre=5, url=None, timeout_ms=5000)

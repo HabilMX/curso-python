@@ -1,0 +1,5 @@
+--- con shell=True y un texto armado ---
+revisando catalogo
+INYECTADO
+--- con una lista y sin shell ---
+revisando catalogo; echo INYECTADO

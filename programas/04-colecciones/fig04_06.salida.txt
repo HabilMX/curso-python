@@ -1,0 +1,8 @@
+5 3
+['catalogo', 'pagos', 'reportes']
+True
+['inventario', 'reportes']
+['catalogo', 'pagos']
+['catalogo', 'gateway', 'pagos']
+['catalogo', 'inventario', 'pagos']
+<class 'dict'> <class 'set'>

@@ -1,0 +1,9 @@
+True
+True
+2
+5000 <class 'int'> True
+0 <class 'int'> False
+-1 <class 'int'> False
+True <class 'bool'> False
+5000 <class 'str'> False
+2.5 <class 'float'> False

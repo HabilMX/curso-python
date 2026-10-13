@@ -1,0 +1,10 @@
+$ cd fig03_14
+$ python medidas.py
+medidas.py: __name__ vale __main__
+medidas.py se está ejecutando directamente
+2.3
+$ python uso.py
+medidas.py: __name__ vale medidas
+uso.py: __name__ vale __main__
+0.087
+843

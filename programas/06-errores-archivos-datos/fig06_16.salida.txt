@@ -1,0 +1,6 @@
+https://catalogo.example         esquema='https' permitida=True
+http://127.0.0.1:8099/catalogo   esquema='http' permitida=True
+ftp://archivos.example           esquema='ftp' permitida=False
+file:///etc/hosts                esquema='file' permitida=False
+catalogo.example                 esquema='' permitida=False
+javascript:alert(1)              esquema='javascript' permitida=False

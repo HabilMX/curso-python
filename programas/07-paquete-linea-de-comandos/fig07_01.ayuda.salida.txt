@@ -1,0 +1,11 @@
+usage: revisor [-h] [--config CONFIG] [--formato {tabla,json}] [--version]
+
+Revisa el estado de una lista de servicios.
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG       archivo TOML con la lista de servicios (por omisión:
+                        servicios.toml)
+  --formato {tabla,json}
+                        forma del reporte (por omisión: tabla)
+  --version             show program's version number and exit

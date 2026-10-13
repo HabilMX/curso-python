@@ -1,0 +1,8 @@
+leyendo '142'
+  '142' se convirtió en 142
+  (fin de la conversión)
+  resultado: 142
+leyendo '142 ms'
+  '142 ms' no es un número entero
+  (fin de la conversión)
+  resultado: None

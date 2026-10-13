@@ -1,0 +1,5 @@
+catalogo: respondió
+inventario: respondió
+pagos: respondió
+reportes: respondió
+TaskGroup con time.sleep: 1.1 s

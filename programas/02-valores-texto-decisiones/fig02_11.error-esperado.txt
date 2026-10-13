@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "fig02_11.py", line 6, in <module>
+    if tiempo_ms >= UMBRAL_LENTO_MS:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'NoneType' and 'int'

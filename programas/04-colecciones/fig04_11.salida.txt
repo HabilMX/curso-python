@@ -1,0 +1,4 @@
+[['catalogo', 'pagos'], ['reportes', 'inventario']]
+True
+[['catalogo', 'pagos'], ['reportes']]
+[['catalogo', 'pagos'], ['reportes', 'inventario']]

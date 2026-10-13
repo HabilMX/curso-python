@@ -1,0 +1,18 @@
+$ pytest -q fig08_02.py
+.F                                                                       [100%]
+=================================== FAILURES ===================================
+____________________________ test_1000_ms_es_lento _____________________________
+
+    def test_1000_ms_es_lento() -> None:
+>       assert clasificar(200, 1000) == "LENTO"
+E       AssertionError: assert 'ARRIBA' == 'LENTO'
+E         
+E         - LENTO
+E         + ARRIBA
+
+fig08_02.py:18: AssertionError
+=========================== short test summary info ============================
+FAILED fig08_02.py::test_1000_ms_es_lento - AssertionError: assert 'ARRIBA' =...
+1 failed, 1 passed in 0.01s
+$ echo $?
+1

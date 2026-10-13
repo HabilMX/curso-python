@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "fig04_14.py", line 3, in <module>
+    for nombre in tiempos_ms:
+                  ^^^^^^^^^^
+RuntimeError: dictionary changed size during iteration

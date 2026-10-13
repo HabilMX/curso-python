@@ -1,0 +1,2 @@
+usage: revisor [-h] [--config CONFIG] [--formato {tabla,json}] [--version]
+revisor: error: argument --formato: invalid choice: 'xml' (choose from 'tabla', 'json')

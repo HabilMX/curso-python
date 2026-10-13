@@ -1,0 +1,13 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "revisor"
+version = "0.6.0"
+description = "Revisa el estado de una lista de servicios"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+revisor = "revisor.cli:main"

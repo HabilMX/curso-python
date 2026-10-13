@@ -1,0 +1,6 @@
+['catalogo', 'pagos', 'reportes']
+True
+['catalogo', 'pagos', 'reportes']
+['catalogo', 'pagos', 'reportes', 'inventario']
+False
+5 6

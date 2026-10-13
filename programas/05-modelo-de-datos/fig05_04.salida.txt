@@ -1,0 +1,7 @@
+None -> sin respuesta
+200 -> todo bien
+302 -> redirección
+404 -> no existe
+418 -> error del cliente (418)
+503 -> falla del servidor (503)
+100 -> otro

@@ -1,0 +1,2 @@
+el servidor de mentira recibió: GET https://catalogo.example/estado
+200 todo bien

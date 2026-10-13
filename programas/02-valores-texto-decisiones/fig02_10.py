@@ -1,0 +1,4 @@
+# fig02_10.py
+codigo = 503
+if codigo >= 400:
+print("CAIDO")

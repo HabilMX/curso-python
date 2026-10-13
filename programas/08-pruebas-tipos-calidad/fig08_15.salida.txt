@@ -1,0 +1,10 @@
+$ cd fig08_15
+$ ruff format --check
+11 files already formatted
+$ ruff check
+All checks passed!
+$ mypy
+Success: no issues found in 11 source files
+$ pytest -q
+.....................                                                    [100%]
+21 passed in 0.02s

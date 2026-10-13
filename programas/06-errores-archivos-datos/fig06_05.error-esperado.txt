@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "fig06_05.py", line 8, in leer_timeout_ms
+    return int(texto)
+ValueError: invalid literal for int() with base 10: 'cinco mil'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "fig06_05.py", line 20, in <module>
+    main()
+    ~~~~^^
+  File "fig06_05.py", line 15, in main
+    timeout_ms = leer_timeout_ms("cinco mil")
+  File "fig06_05.py", line 11, in leer_timeout_ms
+    raise ErrorDeConfiguracion(mensaje) from error
+ErrorDeConfiguracion: 'timeout_ms' debe ser un entero, llegó 'cinco mil'

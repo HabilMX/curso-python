@@ -1,0 +1,29 @@
+..F....                                                                  [100%]
+=================================== FAILURES ===================================
+_______________________ test_clasificar[200-1000-LENTO] ________________________
+
+codigo = 200, tiempo_ms = 1000, esperado = 'LENTO'
+
+    @pytest.mark.parametrize(
+        ("codigo", "tiempo_ms", "esperado"),
+        [
+            (200, 142, "ARRIBA"),
+            (200, 999, "ARRIBA"),
+            (200, 1000, "LENTO"),
+            (200, 2300, "LENTO"),
+            (503, 95, "CAIDO"),
+            (404, 50, "CAIDO"),
+            (None, None, "CAIDO"),
+        ],
+    )
+    def test_clasificar(codigo: int | None, tiempo_ms: int | None, esperado: str) -> None:
+>       assert clasificar(codigo, tiempo_ms) == esperado
+E       AssertionError: assert 'ARRIBA' == 'LENTO'
+E         
+E         - LENTO
+E         + ARRIBA
+
+fig08_06.py:28: AssertionError
+=========================== short test summary info ============================
+FAILED fig08_06.py::test_clasificar[200-1000-LENTO] - AssertionError: assert ...
+1 failed, 6 passed in 0.01s

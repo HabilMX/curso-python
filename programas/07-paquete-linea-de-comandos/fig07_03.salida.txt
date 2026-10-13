@@ -1,0 +1,2 @@
+reporte: 4 servicios revisados
+aviso: reportes no respondió

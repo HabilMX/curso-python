@@ -1,0 +1,2 @@
+config = servicios.toml
+formato = tabla

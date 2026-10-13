@@ -1,0 +1,6 @@
+httpx, por omisión: Timeout(timeout=5.0)
+notificaciones: tiempo agotado
+reportes: sin conexión
+True
+False
+True

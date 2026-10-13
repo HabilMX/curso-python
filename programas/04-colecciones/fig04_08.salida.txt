@@ -1,0 +1,7 @@
+[2300]
+[2300]
+['142ms', '2300ms', '87ms']
+142ms, 2300ms, 87ms
+{'catalogo': 142, 'inventario': 2300, 'pagos': 87}
+{'reportes'}
+843

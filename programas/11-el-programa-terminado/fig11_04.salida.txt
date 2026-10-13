@@ -1,0 +1,2 @@
+random con la misma semilla: True
+secrets, largo del token: 32

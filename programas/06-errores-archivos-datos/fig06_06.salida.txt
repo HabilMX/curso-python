@@ -1,0 +1,3 @@
+dentro del with: cerrado = False
+fuera del with: cerrado = True
+['Revisión de las 9:00', 'reportes: sin conexión']
