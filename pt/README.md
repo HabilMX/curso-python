@@ -44,7 +44,7 @@ Ele começa na lição 2 com um cabeçalho e um único serviço, e cresce a cada
 
 No final de cada lição há exercícios com as suas soluções e uma seção “Para ler mais”; as fontes do que se afirma têm link no próprio texto, onde são usadas. E o [diário de bordo](https://github.com/HabilMX/curso-python/blob/main/pt/bitacora.md) é seu: anote ali o que foi difícil para você.
 
-**Para seguir lendo:** no blog da Hábil, [testes que detectam erros](https://www.habil.mx/pt/blog/testes-que-detectam-erros-cobertura-quality-gate/) e [segurança de APIs](https://www.habil.mx/pt/blog/seguranca-de-apis-cto-identidade-gateway-tokens/).
+**Para seguir lendo:** no blog da Hábil, [testes que detectam erros](https://www.habil.mx/pt/blog/testes-que-detectam-erros-cobertura-quality-gate/) e [segurança de APIs](https://www.habil.mx/pt/blog/seguranca-de-apis-cto-identidade-gateway-tokens/). E nos cursos: se você já sabe programar e quer Java moderno, o [curso de Java](https://github.com/HabilMX/curso-java).
 
 ## Três critérios que atravessam todo o curso
 
