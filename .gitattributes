@@ -10,3 +10,7 @@
 # 7-oct-2026—: se miran como el resto del material y solo se excluyen del paquete
 # que se publica.
 es/_*.md export-ignore
+
+# La lista de patrones se queda en GitLab: deletrea nombres internos y el
+# revisor no puede revisarse a si mismo (se excluye para no cazarse siempre).
+.publicable-prohibido.txt export-ignore
