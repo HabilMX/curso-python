@@ -2,7 +2,6 @@
 
 [![Verificar el curso](https://github.com/HabilMX/curso-python/actions/workflows/verificar.yml/badge.svg)](https://github.com/HabilMX/curso-python/actions/workflows/verificar.yml)
 
-
 **Por Dorian Chávez, fundador de Hábil y arquitecto de integración.**
 
 **Cada lección de este curso se mide en cada cambio —su profundidad, que cumpla la plantilla, que las traducciones correspondan al español y que no se publique material interno—, y la comprobación se corre con un comando que cualquiera puede repetir.**
@@ -104,7 +103,7 @@ Cada programa es un archivo `figNN_NN.py` dentro de la carpeta de su lección, c
 | `en/`, `fr/`, `pt/`, `bg/` | las traducciones, una lección por archivo |
 | `programas/` | los programas de las lecciones (uno por archivo, con su salida esperada) |
 | `herramientas/` | los guiones que verifican el curso (ver abajo) y las versiones fijadas de las herramientas |
-| `verificar-publicable.sh` | revisa que el material no contenga rutas internas ni claves antes de publicarlo. Se corre en el repositorio de trabajo: lee una lista de patrones que no se publica, porque enumerarlos en claro delataría justo lo que protegen |
+
 | `LICENSE.md` | CC BY-SA 4.0 |
 
 Dentro de `herramientas/`:
