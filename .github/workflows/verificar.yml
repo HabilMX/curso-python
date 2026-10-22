@@ -20,6 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: El medidor de profundidad sabe fallar (control positivo)
+        run: herramientas/autoprueba-medir-profundidad.sh
+
       - name: La profundidad se mide (piso de 3,000 palabras por leccion, mediana de 4,000)
         run: herramientas/medir-profundidad.sh
 

@@ -719,7 +719,7 @@ $ mypy
 Success: no issues found in 12 source files
 ```
 
-E exatamente o mesmo com o 3.12, que é o do seu Mint:
+E exatamente o mesmo com o 3.12, a linha do seu Mint. A execução abaixo foi feita com Python 3.12.12; o do Mint 22 é o 3.12.3 (você viu isso na lição 1), então na sua tela a primeira linha dirá `Python 3.12.3`:
 
 ```text
 $ python --version

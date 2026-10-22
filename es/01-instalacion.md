@@ -55,7 +55,7 @@ $ python3 --version
 Python 3.12.3
 ```
 
-La salida que verás es de la forma `Python 3.12.x`: el último número (el parche) depende de las actualizaciones que tu Mint haya recibido. Lo que importa es el `3.12`. Esa es la versión con la que trabaja el curso, y como viste en la lección anterior, todo el código corre también en la 3.14. Si tu terminal dice otra cosa (una 3.10 o una 3.11), el curso casi seguro funcionará igual, pero la 3.10 llegó a su fin de vida el 1 de octubre de 2026; anótalo en la [bitácora](bitacora.md) y sigue.
+En cualquier Mint 22.x la salida es `Python 3.12.3`, por más actualizaciones que haya recibido: Ubuntu 24.04, la base de Mint 22, publicó el paquete de Python con el número 3.12.3 y desde entonces entrega sus correcciones como revisiones de ese mismo paquete (`3.12.3-1ubuntu0.1`, `3.12.3-1ubuntu0.2` y así hasta la `3.12.3-1ubuntu0.17`, la vigente el 22 de octubre de 2026), sin cambiar el número que imprime Python. Lo muestra la [página del paquete `python3.12` para Ubuntu 24.04 en Launchpad](https://launchpad.net/ubuntu/noble/+source/python3.12). Lo que importa es el `3.12`. Esa es la versión con la que trabaja el curso, y como viste en la lección anterior, todo el código corre también en la 3.14. Si tu terminal dice otra cosa (una 3.10 o una 3.11), el curso casi seguro funcionará igual, pero la 3.10 llegó a su fin de vida el 1 de octubre de 2026; anótalo en la [bitácora](bitacora.md) y sigue.
 
 Ahora pregunta **de dónde sale** ese Python:
 
