@@ -57,6 +57,7 @@ Hay una novedad de sintaxis. Una f-string te deja poner el ancho **dentro** de l
 ```python
 # fig11_05/src/revisor/formato.py
 import json
+from urllib.parse import urlsplit, urlunsplit
 
 from revisor.modelo import Estado, Resultado
 
@@ -120,6 +121,12 @@ def tabla(resultados: list[Resultado]) -> str:
     return "\n".join(renglones)
 
 
+def url_sin_secretos(url: str) -> str:
+    partes = urlsplit(url)
+    servidor = partes.netloc.rpartition("@")[2]
+    return urlunsplit((partes.scheme, servidor, partes.path, "", ""))
+
+
 def reporte_a_json(resultados: list[Resultado]) -> str:
     tiempos_ms = [r.tiempo_ms for r in resultados if r.tiempo_ms is not None]
     promedio_ms: int | None = None
@@ -129,7 +136,7 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
         "servicios": [
             {
                 "nombre": r.servicio.nombre,
-                "url": r.servicio.url,
+                "url": url_sin_secretos(r.servicio.url),
                 "estado": r.estado.value,
                 "tiempo_ms": r.tiempo_ms,
                 "detalle": r.detalle,
@@ -481,6 +488,17 @@ $ echo $?
 ```
 
 Un archivo con `url = "file:///etc/passwd"` es rechazado antes de hacer nada: sale el mensaje de configuración y el código `2`. Sin esa validación, según la herramienta que hiciera la petición, `file://` podría leer archivos de tu propia máquina. Y hay una variante más sutil que la validación del esquema no cubre: una dirección `http://` que apunta **hacia adentro** de tu red (a un servicio interno o al servicio de metadatos de un servidor en la nube) hace que *tu* programa, que está dentro, consulte algo que el autor de la dirección no podría alcanzar desde fuera. Ese ataque se llama *server-side request forgery* (SSRF) y [OWASP lo describe con detalle](https://owasp.org/www-community/attacks/Server_Side_Request_Forgery). Para el `revisor`, que lee un archivo de configuración que tú escribes, es un riesgo bajo; para un servicio web que recibe direcciones de usuarios, es un riesgo central. La regla: **una dirección que viene de fuera es un dato no confiable, y se valida (y se limita a un conjunto permitido) antes de usarse**. La entrada del blog de Hábil sobre [seguridad de APIs](https://www.habil.mx/es/blog/seguridad-apis-cto-identidad-gateway-tokens/) lleva esa regla al nivel de la arquitectura.
+
+La misma validación cierra otra puerta: la dirección con usuario y clave. `http://usuario:clave@servidor/...` es una forma válida de escribir una URL, y por eso pasaba `es_url_http`; pero esos datos son un secreto, y el reporte JSON los repetía tal cual. `validar_servicio` la rechaza con su propio mensaje, que **no repite la dirección**: repetirla en el error sería filtrar el secreto justo en el aviso. Con un `secreto.toml` cuya `url` es `http://usuario:clave@127.0.0.1:1/estado?token=SECRETO#x`:
+
+```text
+$ python -m revisor --config secreto.toml
+error de configuración: servicio 1: 'url' no debe llevar usuario ni clave
+$ echo $?
+2
+```
+
+Un secreto también puede viajar en la consulta (`?token=...`) o en el fragmento (`#...`). Esas direcciones se aceptan, porque hay servicios que las piden, pero el reporte no las repite enteras: `reporte_a_json` las pasa por `url_sin_secretos` (Lección 6), que deja el esquema, el servidor y la ruta. Con `url = "http://127.0.0.1:1/estado?token=SECRETO#x"`, el JSON dice `"url": "http://127.0.0.1:1/estado"`. La regla: **ningún error, registro ni reporte repite la dirección completa; si hace falta mostrarla, va sin usuario, sin clave, sin consulta y sin fragmento**.
 
 #### 11.3.2 `subprocess`: una lista, nunca un texto armado
 
@@ -1167,6 +1185,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -1186,6 +1209,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:

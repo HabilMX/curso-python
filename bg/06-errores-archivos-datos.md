@@ -792,6 +792,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -811,6 +816,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:
@@ -838,7 +847,7 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
 Функцията `validar_servicio` получава `datos: object`, най-общия тип, който съществува, нарочно: **не знае какво е**, защото идва отвън. Първото е да провери с `isinstance(datos, dict)`, че е речник. След това проверява поле по поле, в този ред, и спира при първия проблем:
 
 - `nombre` трябва да съществува и да е текст, който не е празен (`nombre.strip() == ""` хваща текста, който има само интервали);
-- `url` трябва да съществува и да минава `es_url_http`: разрешена схема, сървър и, ако носи, валиден порт (6.4.3);
+- `url` трябва да съществува и да минава `es_url_http`: разрешена схема, сървър и, ако носи, валиден порт (6.4.3), и освен това не бива да носи потребител или парола (`tiene_credenciales`): адрес като `http://usuario:clave@...` носи тайна и `revisor` не бива нито да я пази, нито да я повтаря;
 - `timeout_ms`, който е по избор, се проверява само ако присъства (`"timeout_ms" not in datos`; операторът `in` пита дали един ключ е в речника) и трябва да е цяло число, по-голямо от 0, което **не** е `bool` (6.4.2).
 
 Ако всичко е наред, връща `Servicio`. Ако няма `timeout_ms`, не го подава: стойността по подразбиране 5000 я слага дефиницията на `Servicio`, която идва от урок 5. Всяко съобщение за грешка започва със `servicio N:`, за да знае този, който редактира файла, **кой** елемент да прегледа. Съобщенията, които модулът произвежда, са тези, като позицията се брои от 1:
@@ -852,12 +861,19 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
 | услугата не е таблица | `servicio 2: debe ser una tabla` |
 | празно име или такова, което не е текст | `servicio 2: 'nombre' debe ser un texto que no esté vacío` |
 | url, който не е валиден http/https адрес | `servicio 2: 'url' debe ser una dirección http:// o https:// válida` |
+| url с потребител или парола | `servicio 2: 'url' no debe llevar usuario ni clave` |
 | невалиден времеви лимит | `servicio 3: 'timeout_ms' debe ser un entero mayor que 0` |
 | повтарящи се имена | `nombres repetidos: catalogo` |
 
-Файлът `formato.py` придоби една функция. Не промени нито една от предишните (`formatear_tiempo`, `encabezado`, `linea`, `contar`, `resumen`); добави се само `import json` в началото и тази функция накрая:
+Файлът `formato.py` придоби две функции. Не промени нито една от предишните (`formatear_tiempo`, `encabezado`, `linea`, `contar`, `resumen`); добавиха се само `import json` и `from urllib.parse import urlsplit, urlunsplit` в началото и тези две функции накрая:
 
 ```python
+def url_sin_secretos(url: str) -> str:
+    partes = urlsplit(url)
+    servidor = partes.netloc.rpartition("@")[2]
+    return urlunsplit((partes.scheme, servidor, partes.path, "", ""))
+
+
 def reporte_a_json(resultados: list[Resultado]) -> str:
     tiempos_ms = [r.tiempo_ms for r in resultados if r.tiempo_ms is not None]
     promedio_ms: int | None = None
@@ -867,7 +883,7 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
         "servicios": [
             {
                 "nombre": r.servicio.nombre,
-                "url": r.servicio.url,
+                "url": url_sin_secretos(r.servicio.url),
                 "estado": r.estado.value,
                 "tiempo_ms": r.tiempo_ms,
                 "detalle": r.detalle,
@@ -886,6 +902,8 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
 ```
 
 Това е пряко приложение на 6.3.3: сглобява се речник с типове, които JSON разбира (затова `r.estado.value`, а не `r.estado`), и се сериализира с `ensure_ascii=False, indent=2`. Средното излиза като `None` (което JSON записва `null`), когато нито една услуга не е отговорила, защото нищо не може да се усредни. Обърни внимание и на едно повторение, което е оставено нарочно: сметките на `resumen` и тези на този речник са едни и същи, изчислени два пъти. Направено е така, за да не се пипа това, което вече работи в урок 5, но това е същият проблем, с който започна този урок, на една стойност, изчислявана на две места: ако някой ден правилото за средното се промени, ще трябва да се промени и на двете места. Запиши го в дневника си: това е вид дълг, който се плаща следващия път, когато се пипа отчетът.
+
+`url_sin_secretos` съществува, защото отчетът излиза от програмата ти: записва се във файл, поставя се в чат, чете го друга програма. Ако адресът носи тайна в заявката (`?token=...`) или нещо във фрагмента (`#...`), отчетът не бива да я повтаря. `urlsplit` разделя адреса (6.4.3); `partes.netloc.rpartition("@")[2]` взема това, което идва след последното `@`, тоест сървъра и порта без потребител и парола (`rpartition` разделя текста на три при последната поява на разделителя, а `[2]` е дясната част; ако няма `@`, това е целият текст); а `urlunsplit` сглобява адреса отново със схемата, сървъра и пътя и с празни заявка и фрагмент. Така `http://127.0.0.1:1/estado?token=SECRETO#x` излиза в отчета като `http://127.0.0.1:1/estado`. Адрес с потребител или парола дори не стига дотук, защото `validar_servicio` го отхвърля при зареждане; премахването им и тук е втора мрежа. Адресът се редактира, вместо полето да се махне, защото JSON е договор (ще го видиш след изпълнението): който го чете, разчита, че всяка услуга носи своя `url`, и без тайните пак знае за кой сървър и кой път се отнася всеки запис.
 
 Остава главната програма. Така изглежда `revisor.py`, който загуби списъка с услуги и придоби константа с пътя на файла:
 
@@ -993,7 +1011,7 @@ $ python ver_json.py
 }
 ```
 
-Това е JSON, който курсът фиксира за отчета на `revisor` и който не се променя в следващите уроци: `servicios` е списък с по един запис за услуга, `tiempo_ms` е `null` за тази, която не е отговорила, а `resumen` повтаря сметките. Който консумира този отчет от друга програма, може да се опре на тази форма.
+Това е JSON, който курсът фиксира за отчета на `revisor` и който не се променя в следващите уроци: `servicios` е списък с по един запис за услуга, `tiempo_ms` е `null` за тази, която не е отговорила, а `resumen` повтаря сметките. Който консумира този отчет от друга програма, може да се опре на тази форма. Единственото, което отчетът променя в адреса, е да махне тайните: четирите услуги в `servicios.toml` нямат такива и затова техният `url` излиза същият като във файла.
 
 ## Грешката, която ще видиш
 

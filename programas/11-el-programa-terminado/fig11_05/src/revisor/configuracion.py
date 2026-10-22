@@ -50,6 +50,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -69,6 +74,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:

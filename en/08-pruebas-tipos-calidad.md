@@ -1109,6 +1109,7 @@ def revisar_todos(servicios: list[Servicio]) -> list[Resultado]:
 ```python
 # fig08_15/src/revisor/formato.py
 import json
+from urllib.parse import urlsplit, urlunsplit
 
 from revisor.modelo import Estado, Resultado
 
@@ -1157,6 +1158,12 @@ def resumen(resultados: list[Resultado]) -> str:
     return " · ".join(partes)
 
 
+def url_sin_secretos(url: str) -> str:
+    partes = urlsplit(url)
+    servidor = partes.netloc.rpartition("@")[2]
+    return urlunsplit((partes.scheme, servidor, partes.path, "", ""))
+
+
 def reporte_a_json(resultados: list[Resultado]) -> str:
     tiempos_ms = [r.tiempo_ms for r in resultados if r.tiempo_ms is not None]
     promedio_ms: int | None = None
@@ -1166,7 +1173,7 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
         "servicios": [
             {
                 "nombre": r.servicio.nombre,
-                "url": r.servicio.url,
+                "url": url_sin_secretos(r.servicio.url),
                 "estado": r.estado.value,
                 "tiempo_ms": r.tiempo_ms,
                 "detalle": r.detalle,
@@ -1237,6 +1244,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -1256,6 +1268,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:
@@ -1501,8 +1517,8 @@ To see it red, change the `2` to a `0` and run: it must fail with `assert 2 == 0
 **Three** errors come out, in two files (`Found 3 errors in 2 files (checked 11 source files)`):
 
 ```text
-src/revisor/formato.py:22: error: Argument 1 to "formatear_tiempo" has incompatible type "int | None"; expected "int"  [arg-type]
-src/revisor/formato.py:46: error: Argument 1 to "formatear_tiempo" has incompatible type "int | None"; expected "int"  [arg-type]
+src/revisor/formato.py:23: error: Argument 1 to "formatear_tiempo" has incompatible type "int | None"; expected "int"  [arg-type]
+src/revisor/formato.py:47: error: Argument 1 to "formatear_tiempo" has incompatible type "int | None"; expected "int"  [arg-type]
 tests/test_formato.py:17: error: Argument 1 to "formatear_tiempo" has incompatible type "int | None"; expected "int"  [arg-type]
 ```
 

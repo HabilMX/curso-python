@@ -57,6 +57,7 @@ Il y a une nouveauté de syntaxe. Une f-string te laisse mettre la largeur **à 
 ```python
 # fig11_05/src/revisor/formato.py
 import json
+from urllib.parse import urlsplit, urlunsplit
 
 from revisor.modelo import Estado, Resultado
 
@@ -120,6 +121,12 @@ def tabla(resultados: list[Resultado]) -> str:
     return "\n".join(renglones)
 
 
+def url_sin_secretos(url: str) -> str:
+    partes = urlsplit(url)
+    servidor = partes.netloc.rpartition("@")[2]
+    return urlunsplit((partes.scheme, servidor, partes.path, "", ""))
+
+
 def reporte_a_json(resultados: list[Resultado]) -> str:
     tiempos_ms = [r.tiempo_ms for r in resultados if r.tiempo_ms is not None]
     promedio_ms: int | None = None
@@ -129,7 +136,7 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
         "servicios": [
             {
                 "nombre": r.servicio.nombre,
-                "url": r.servicio.url,
+                "url": url_sin_secretos(r.servicio.url),
                 "estado": r.estado.value,
                 "tiempo_ms": r.tiempo_ms,
                 "detalle": r.detalle,
@@ -481,6 +488,17 @@ $ echo $?
 ```
 
 Un fichier avec `url = "file:///etc/passwd"` est rejeté avant de rien faire : le message de configuration sort et le code `2`. Sans cette validation, selon l'outil qui ferait la requête, `file://` pourrait lire des fichiers de ta propre machine. Et il y a une variante plus subtile que la validation du schéma ne couvre pas : une adresse `http://` qui pointe **vers l'intérieur** de ton réseau (vers un service interne ou vers le service de métadonnées d'un serveur dans le cloud) fait que *ton* programme, qui est dedans, interroge quelque chose que l'auteur de l'adresse ne pourrait pas atteindre de l'extérieur. Cette attaque s'appelle *server-side request forgery* (SSRF) et [OWASP la décrit en détail](https://owasp.org/www-community/attacks/Server_Side_Request_Forgery). Pour le `revisor`, qui lit un fichier de configuration que tu écris, c'est un risque faible ; pour un service web qui reçoit des adresses d'utilisateurs, c'est un risque central. La règle : **une adresse qui vient de l'extérieur est une donnée non fiable, et elle se valide (et se limite à un ensemble permis) avant d'être utilisée**. L'entrée du blog de Hábil sur la [sécurité des API](https://www.habil.mx/fr/blog/securite-api-cto-identite-passerelle-jetons/) porte cette règle au niveau de l'architecture.
+
+La même validation ferme une autre porte : l'adresse avec utilisateur et mot de passe. `http://usuario:clave@servidor/...` est une façon valide d'écrire une URL, et c'est pourquoi elle passait `es_url_http` ; mais ces données sont un secret, et le rapport JSON les répétait telles quelles. `validar_servicio` la rejette avec son propre message, qui **ne répète pas l'adresse** : la répéter dans l'erreur serait divulguer le secret justement dans l'avertissement. Avec un `secreto.toml` dont l'`url` est `http://usuario:clave@127.0.0.1:1/estado?token=SECRETO#x` :
+
+```text
+$ python -m revisor --config secreto.toml
+error de configuración: servicio 1: 'url' no debe llevar usuario ni clave
+$ echo $?
+2
+```
+
+Un secret peut aussi voyager dans la requête (`?token=...`) ou dans le fragment (`#...`). Ces adresses sont acceptées, parce que certains services les demandent, mais le rapport ne les répète pas en entier : `reporte_a_json` les fait passer par `url_sin_secretos` (Leçon 6), qui garde le schéma, le serveur et le chemin. Avec `url = "http://127.0.0.1:1/estado?token=SECRETO#x"`, le JSON dit `"url": "http://127.0.0.1:1/estado"`. La règle : **aucune erreur, aucun journal ni aucun rapport ne répète l'adresse complète ; s'il faut la montrer, elle va sans utilisateur, sans mot de passe, sans requête et sans fragment**.
 
 #### 11.3.2 `subprocess` : une liste, jamais un texte monté
 
@@ -1167,6 +1185,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -1186,6 +1209,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:

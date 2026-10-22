@@ -792,6 +792,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -811,6 +816,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:
@@ -838,7 +847,7 @@ The `leer_servicios` function receives a path and returns the list of `Servicio`
 The `validar_servicio` function receives `datos: object`, the most general type there is, on purpose: it **does not know what it is**, because it comes from outside. The first thing is to check with `isinstance(datos, dict)` that it is a dictionary. After that it checks field by field, in this order, and stops at the first problem:
 
 - the `nombre` must exist and be a text that is not empty (`nombre.strip() == ""` catches the text that only has spaces);
-- the `url` must exist and pass `es_url_http`: permitted scheme, a server and, if it carries one, a valid port (6.4.3);
+- the `url` must exist and pass `es_url_http`: permitted scheme, a server and, if it carries one, a valid port (6.4.3), and it must not carry a user or password (`tiene_credenciales`): an address like `http://usuario:clave@...` carries a secret, and the `revisor` must neither keep it nor repeat it;
 - `timeout_ms`, which is optional, is only checked if present (`"timeout_ms" not in datos`; the `in` operator asks whether a key is in the dictionary), and must be an integer greater than 0 that is **not** `bool` (6.4.2).
 
 If everything is fine, it returns a `Servicio`. If there is no `timeout_ms`, it does not pass it: the default value of 5000 is set by the definition of `Servicio`, which comes from Lesson 5. Each error message starts with `servicio N:` so that whoever edits the file knows **which** element to check. The messages the module produces are these, with the position counting from 1 (the messages are in Spanish, as the program prints them, each one followed by a gloss):
@@ -852,12 +861,19 @@ If everything is fine, it returns a `Servicio`. If there is no `timeout_ms`, it 
 | the service is not a table | `servicio 2: debe ser una tabla` (“service 2: must be a table”) |
 | name empty or not a text | `servicio 2: 'nombre' debe ser un texto que no esté vacío` (“service 2: 'nombre' must be a text that is not empty”) |
 | url that is not a valid http/https address | `servicio 2: 'url' debe ser una dirección http:// o https:// válida` (“service 2: 'url' must be a valid http:// or https:// address”) |
+| url with a user or password | `servicio 2: 'url' no debe llevar usuario ni clave` (“service 2: 'url' must not carry a user or password”) |
 | invalid timeout | `servicio 3: 'timeout_ms' debe ser un entero mayor que 0` (“service 3: 'timeout_ms' must be an integer greater than 0”) |
 | repeated names | `nombres repetidos: catalogo` (“repeated names: catalogo”) |
 
-The `formato.py` file gained a function. None of the previous ones changed (`formatear_tiempo`, `encabezado`, `linea`, `contar`, `resumen`); only `import json` was added at the top and this function at the end:
+The `formato.py` file gained two functions. None of the previous ones changed (`formatear_tiempo`, `encabezado`, `linea`, `contar`, `resumen`); only `import json` and `from urllib.parse import urlsplit, urlunsplit` were added at the top and these two functions at the end:
 
 ```python
+def url_sin_secretos(url: str) -> str:
+    partes = urlsplit(url)
+    servidor = partes.netloc.rpartition("@")[2]
+    return urlunsplit((partes.scheme, servidor, partes.path, "", ""))
+
+
 def reporte_a_json(resultados: list[Resultado]) -> str:
     tiempos_ms = [r.tiempo_ms for r in resultados if r.tiempo_ms is not None]
     promedio_ms: int | None = None
@@ -867,7 +883,7 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
         "servicios": [
             {
                 "nombre": r.servicio.nombre,
-                "url": r.servicio.url,
+                "url": url_sin_secretos(r.servicio.url),
                 "estado": r.estado.value,
                 "tiempo_ms": r.tiempo_ms,
                 "detalle": r.detalle,
@@ -886,6 +902,8 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
 ```
 
 It is the direct application of 6.3.3: a dictionary is built with types JSON understands (hence `r.estado.value` and not `r.estado`), and it is serialized with `ensure_ascii=False, indent=2`. The average comes out as `None` (which JSON writes `null`) when no service answered, because nothing can be averaged. Notice also a repetition that is left on purpose: the counts in `resumen` and those in this dictionary are the same, calculated twice. It was done this way so as not to touch what already works from Lesson 5, but it is the same problem this lesson began with, that of a piece of data calculated in two places: if one day the rule for the average changes, it will have to be changed in both. Note it in your logbook: it is the kind of debt that gets paid the next time the report is touched.
+
+`url_sin_secretos` exists because the report leaves your program: it is saved to a file, pasted into a chat, read by another program. If the address carries a secret in the query (`?token=...`) or something in the fragment (`#...`), the report must not repeat it. `urlsplit` splits the address (6.4.3); `partes.netloc.rpartition("@")[2]` keeps what comes after the last `@`, that is, the server and the port without user or password (`rpartition` splits the text in three at the last occurrence of the separator, and `[2]` is the right-hand part; if there is no `@`, it is the whole text); and `urlunsplit` puts the address back together with the scheme, the server and the path, and with an empty query and fragment. So `http://127.0.0.1:1/estado?token=SECRETO#x` comes out in the report as `http://127.0.0.1:1/estado`. An address with a user or password does not even get here, because `validar_servicio` rejects it on load; removing them here as well is a second net. The address is redacted instead of dropping the field because the JSON is a contract (you will see it after the run): whoever reads it counts on each service carrying its `url`, and without the secrets they still know which server and which path each entry refers to.
 
 The main program is missing. This is how `revisor.py` turns out, which lost the list of services and gained a constant with the file's path:
 
@@ -993,7 +1011,7 @@ $ python ver_json.py
 }
 ```
 
-It is the JSON the course fixes for the `revisor`'s report, and it does not change in the lessons that follow: `servicios` is a list with one entry per service, `tiempo_ms` is `null` for the one that did not answer, and `resumen` repeats the counts. Whoever consumes that report from another program can rely on that shape.
+It is the JSON the course fixes for the `revisor`'s report, and it does not change in the lessons that follow: `servicios` is a list with one entry per service, `tiempo_ms` is `null` for the one that did not answer, and `resumen` repeats the counts. Whoever consumes that report from another program can rely on that shape. The only thing the report changes in the address is removing its secrets: the four services in `servicios.toml` carry none, and that is why their `url` comes out the same as in the file.
 
 ## The error you will see
 

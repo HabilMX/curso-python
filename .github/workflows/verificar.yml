@@ -5,8 +5,8 @@ name: Verificar el curso
 #
 # 🔴 ESTE ARCHIVO SOLO CORRE LO QUE YA EXISTE Y FUNCIONA. Un paso que invoque un
 # guion inexistente pone la corrida en rojo desde el primer dia y entrena a todos
-# a ignorar el rojo, que es peor que no tener verificacion. Los cinco pasos de
-# abajo se probaron uno por uno antes de escribirlos aqui.
+# a ignorar el rojo, que es peor que no tener verificacion. Los pasos de abajo
+# se probaron uno por uno antes de escribirlos aqui.
 on:
   push:
   pull_request:
@@ -31,6 +31,9 @@ jobs:
 
       - name: Las traducciones corresponden al español
         run: herramientas/verificar-traducciones.sh
+
+      - name: La URL sembrada (obligatoria) — ningún revisor acepta usuario ni clave, ni repite los secretos de la URL
+        run: herramientas/verificar-url-sembrada.sh
 
       - name: Nota sobre la revisión previa a publicar
         run: |

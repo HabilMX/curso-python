@@ -6,7 +6,7 @@
 
 **Cada lección de este curso se mide en cada cambio —su profundidad, que cumpla la plantilla, que las traducciones correspondan al español y que no se publique material interno—, y la comprobación se corre con un comando que cualquiera puede repetir.**
 Haz clic en el sello para abrir la última corrida y ver, paso por paso, qué se ejecutó y qué salió. Los guiones que la hacen viven en [`herramientas/`](herramientas/) y se corren desde la raíz del repositorio.
-🔴 **Lo que esa corrida NO hace es ejecutar los programas**: ningún guion los compila ni los corre todavía. Mientras no exista, que cada programa dé la salida que la lección documenta es responsabilidad de quien escribe la lección.
+🔴 **Lo que esa corrida NO hace es ejecutar los programas de las lecciones y comparar su salida**: ningún guion lo hace todavía. Mientras no exista, que cada programa dé la salida que la lección documenta es responsabilidad de quien escribe la lección. La única excepción es la prueba de la URL sembrada (`herramientas/verificar-url-sembrada.sh`), que sí corre el `revisor` de las lecciones 6 a 11.
 
 > El curso está en cinco idiomas: español (el original), inglés, francés, portugués de Brasil y búlgaro, cada uno en su carpeta.
 
@@ -113,6 +113,7 @@ Dentro de `herramientas/`:
 | `medir-profundidad.sh` | cuenta las palabras de explicación por lección y exige las dos varas |
 | `verificar-plantilla.sh` | comprueba que cada lección cumpla la plantilla, **en cualquiera de los cinco idiomas** |
 | `verificar-traducciones.sh` | dice qué traducciones están al día, cuáles vencieron y cuáles faltan |
+| `verificar-url-sembrada.sh` | corre `url-sembrada.py` contra el `revisor` de las lecciones 6 a 11: una URL con usuario o clave se rechaza al cargar, y ningún reporte, error ni registro repite usuario, clave, consulta ni fragmento. Es obligatoria: falla si la prueba falta, si un revisor sale en rojo o si corrió en menos de seis |
 | `registrar-traduccion.sh` | registra una traducción con la huella del español del que se tradujo |
 | `registro-traducciones.tsv` | ese registro: un renglón por capítulo e idioma |
 | `requisitos.txt` | las versiones exactas de `httpx`, `pytest`, `ruff` y `mypy` |

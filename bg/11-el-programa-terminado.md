@@ -57,6 +57,7 @@
 ```python
 # fig11_05/src/revisor/formato.py
 import json
+from urllib.parse import urlsplit, urlunsplit
 
 from revisor.modelo import Estado, Resultado
 
@@ -120,6 +121,12 @@ def tabla(resultados: list[Resultado]) -> str:
     return "\n".join(renglones)
 
 
+def url_sin_secretos(url: str) -> str:
+    partes = urlsplit(url)
+    servidor = partes.netloc.rpartition("@")[2]
+    return urlunsplit((partes.scheme, servidor, partes.path, "", ""))
+
+
 def reporte_a_json(resultados: list[Resultado]) -> str:
     tiempos_ms = [r.tiempo_ms for r in resultados if r.tiempo_ms is not None]
     promedio_ms: int | None = None
@@ -129,7 +136,7 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
         "servicios": [
             {
                 "nombre": r.servicio.nombre,
-                "url": r.servicio.url,
+                "url": url_sin_secretos(r.servicio.url),
                 "estado": r.estado.value,
                 "tiempo_ms": r.tiempo_ms,
                 "detalle": r.detalle,
@@ -481,6 +488,17 @@ $ echo $?
 ```
 
 Файл с `url = "file:///etc/passwd"` се отхвърля, преди да се направи каквото и да е: излиза съобщението за конфигурация и кодът `2`. Без тази валидация, според инструмента, който прави заявката, `file://` би могъл да чете файлове от собствената ти машина. И има един по-тънък вариант, който валидацията на схемата не покрива: адрес `http://`, който сочи **навътре** в твоята мрежа (към вътрешна услуга или към услугата за метаданни на сървър в облака), кара *твоята* програма, която е вътре, да запитва нещо, до което авторът на адреса не би могъл да стигне отвън. Тази атака се нарича *server-side request forgery* (SSRF) и [OWASP я описва подробно](https://owasp.org/www-community/attacks/Server_Side_Request_Forgery). За `revisor`, който чете конфигурационен файл, написан от теб, рискът е нисък; за уеб услуга, която получава адреси от потребители, е централен. Правилото: **адрес, който идва отвън, е ненадеждни данни и се валидира (и се ограничава до позволено множество), преди да се използва**. Статията на Hábil в блога за [сигурността на API](https://www.habil.mx/bg/blog/api-security-cto-identity-gateway-tokens/) издига това правило до нивото на архитектурата.
+
+Същата проверка затваря още една врата: адреса с потребител и парола. `http://usuario:clave@servidor/...` е валиден начин да се напише URL и затова минаваше `es_url_http`; но тези данни са тайна и JSON отчетът ги повтаряше както са. `validar_servicio` го отхвърля със собствено съобщение, което **не повтаря адреса**: да го повтори в грешката би означавало да изтече тайната точно в предупреждението. С `secreto.toml`, чийто `url` е `http://usuario:clave@127.0.0.1:1/estado?token=SECRETO#x`:
+
+```text
+$ python -m revisor --config secreto.toml
+error de configuración: servicio 1: 'url' no debe llevar usuario ni clave
+$ echo $?
+2
+```
+
+Тайна може да пътува и в заявката (`?token=...`) или във фрагмента (`#...`). Такива адреси се приемат, защото има услуги, които ги искат, но отчетът не ги повтаря изцяло: `reporte_a_json` ги прекарва през `url_sin_secretos` (Урок 6), която оставя схемата, сървъра и пътя. С `url = "http://127.0.0.1:1/estado?token=SECRETO#x"` JSON казва `"url": "http://127.0.0.1:1/estado"`. Правилото: **никоя грешка, запис или отчет не повтаря пълния адрес; ако трябва да се покаже, той е без потребител, без парола, без заявка и без фрагмент**.
 
 #### 11.3.2 `subprocess`: списък, никога сглобен текст
 
@@ -1167,6 +1185,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -1186,6 +1209,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:

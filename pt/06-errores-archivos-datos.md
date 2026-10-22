@@ -792,6 +792,11 @@ def es_url_http(url: str) -> bool:
         return False
 
 
+def tiene_credenciales(url: str) -> bool:
+    partes = urlsplit(url)
+    return partes.username is not None or partes.password is not None
+
+
 def validar_servicio(datos: object, posicion: int) -> Servicio:
     if not isinstance(datos, dict):
         raise ErrorDeConfiguracion(f"servicio {posicion}: debe ser una tabla")
@@ -811,6 +816,10 @@ def validar_servicio(datos: object, posicion: int) -> Servicio:
         raise ErrorDeConfiguracion(
             f"servicio {posicion}: 'url' debe ser una dirección "
             "http:// o https:// válida"
+        )
+    if tiene_credenciales(url):
+        raise ErrorDeConfiguracion(
+            f"servicio {posicion}: 'url' no debe llevar usuario ni clave"
         )
 
     if "timeout_ms" not in datos:
@@ -838,7 +847,7 @@ A função `leer_servicios` recebe um caminho e devolve a lista de `Servicio`. E
 A função `validar_servicio` recebe `datos: object`, o tipo mais geral que existe, de propósito: **ela não sabe o que é**, porque vem de fora. A primeira coisa é verificar com `isinstance(datos, dict)` que seja um dicionário. Depois ela confere campo por campo, nesta ordem, e para no primeiro problema:
 
 - o `nombre` deve existir e ser um texto que não esteja vazio (`nombre.strip() == ""` pega o texto que só tem espaços);
-- a `url` deve existir e passar por `es_url_http`: esquema permitido, um servidor e, se tiver, uma porta válida (6.4.3);
+- a `url` deve existir e passar por `es_url_http`: esquema permitido, um servidor e, se tiver, uma porta válida (6.4.3), e além disso não deve levar usuário nem senha (`tiene_credenciales`): um endereço como `http://usuario:clave@...` traz um segredo, e o `revisor` não deve guardá-lo nem repeti-lo;
 - `timeout_ms`, que é opcional, só é conferido se estiver presente (`"timeout_ms" not in datos`; o operador `in` pergunta se uma chave está no dicionário), e deve ser um inteiro maior que 0 que **não** seja `bool` (6.4.2).
 
 Se tudo está bem, devolve um `Servicio`. Se não há `timeout_ms`, ela não o passa: o valor padrão de 5000 é posto pela definição de `Servicio`, que vem da lição 5. Cada mensagem de erro começa com `servicio N:` para que quem edita o arquivo saiba **qual** elemento revisar. As mensagens que o módulo produz são estas, com a posição contando a partir de 1:
@@ -852,12 +861,19 @@ Se tudo está bem, devolve um `Servicio`. Se não há `timeout_ms`, ela não o p
 | o serviço não é uma tabela | `servicio 2: debe ser una tabla` |
 | nome vazio ou que não é texto | `servicio 2: 'nombre' debe ser un texto que no esté vacío` |
 | url que não é um endereço http/https válido | `servicio 2: 'url' debe ser una dirección http:// o https:// válida` |
+| url com usuário ou senha | `servicio 2: 'url' no debe llevar usuario ni clave` |
 | tempo limite inválido | `servicio 3: 'timeout_ms' debe ser un entero mayor que 0` |
 | nomes repetidos | `nombres repetidos: catalogo` |
 
-O arquivo `formato.py` ganhou uma função. Não mudou nenhuma das anteriores (`formatear_tiempo`, `encabezado`, `linea`, `contar`, `resumen`); só foi acrescentado `import json` no começo e esta função no final:
+O arquivo `formato.py` ganhou duas funções. Não mudou nenhuma das anteriores (`formatear_tiempo`, `encabezado`, `linea`, `contar`, `resumen`); só foram acrescentados `import json` e `from urllib.parse import urlsplit, urlunsplit` no começo e estas duas funções no final:
 
 ```python
+def url_sin_secretos(url: str) -> str:
+    partes = urlsplit(url)
+    servidor = partes.netloc.rpartition("@")[2]
+    return urlunsplit((partes.scheme, servidor, partes.path, "", ""))
+
+
 def reporte_a_json(resultados: list[Resultado]) -> str:
     tiempos_ms = [r.tiempo_ms for r in resultados if r.tiempo_ms is not None]
     promedio_ms: int | None = None
@@ -867,7 +883,7 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
         "servicios": [
             {
                 "nombre": r.servicio.nombre,
-                "url": r.servicio.url,
+                "url": url_sin_secretos(r.servicio.url),
                 "estado": r.estado.value,
                 "tiempo_ms": r.tiempo_ms,
                 "detalle": r.detalle,
@@ -886,6 +902,8 @@ def reporte_a_json(resultados: list[Resultado]) -> str:
 ```
 
 É a aplicação direta de 6.3.3: monta-se um dicionário com tipos que o JSON entende (por isso `r.estado.value` e não `r.estado`), e serializa-se com `ensure_ascii=False, indent=2`. A média sai como `None` (que o JSON escreve `null`) quando nenhum serviço respondeu, porque não se pode tirar a média de nada. Repare também numa repetição que se deixa de propósito: as contas de `resumen` e as deste dicionário são as mesmas, calculadas duas vezes. Fez-se assim para não mexer no que já funciona na lição 5, mas é o mesmo problema com que esta lição começou, o de um dado calculado em dois lugares: se algum dia a regra da média mudar, será preciso mudá-la nos dois. Anote isso no seu diário de bordo: é o tipo de dívida que se paga na próxima vez que o relatório for tocado.
+
+`url_sin_secretos` existe porque o relatório sai do seu programa: é salvo em um arquivo, colado em um chat, lido por outro programa. Se o endereço traz um segredo na consulta (`?token=...`) ou algo no fragmento (`#...`), o relatório não deve repeti-lo. `urlsplit` divide o endereço (6.4.3); `partes.netloc.rpartition("@")[2]` fica com o que vem depois do último `@`, isto é, o servidor e a porta sem usuário nem senha (`rpartition` divide o texto em três na última ocorrência do separador, e `[2]` é a parte da direita; se não houver `@`, é o texto inteiro); e `urlunsplit` volta a montar o endereço com o esquema, o servidor e o caminho, e com a consulta e o fragmento vazios. Assim, `http://127.0.0.1:1/estado?token=SECRETO#x` sai no relatório como `http://127.0.0.1:1/estado`. Um endereço com usuário ou senha nem chega aqui, porque `validar_servicio` o rejeita ao carregar; tirá-los também aqui é uma segunda rede. O endereço é redigido em vez de tirar o campo porque o JSON é um contrato (você verá isso depois da execução): quem o lê conta com que cada serviço traga sua `url`, e sem os segredos continua sabendo a que servidor e a que caminho cada entrada se refere.
 
 Falta o programa principal. Assim fica o `revisor.py`, que perdeu a lista de serviços e ganhou uma constante com o caminho do arquivo:
 
@@ -993,7 +1011,7 @@ $ python ver_json.py
 }
 ```
 
-É o JSON que o curso fixa para o relatório do `revisor`, e não muda nas lições seguintes: `servicios` é uma lista com uma entrada por serviço, `tiempo_ms` é `null` para o que não respondeu, e `resumen` repete as contas. Quem consumir esse relatório a partir de outro programa pode se apoiar nessa forma.
+É o JSON que o curso fixa para o relatório do `revisor`, e não muda nas lições seguintes: `servicios` é uma lista com uma entrada por serviço, `tiempo_ms` é `null` para o que não respondeu, e `resumen` repete as contas. Quem consumir esse relatório a partir de outro programa pode se apoiar nessa forma. A única coisa que o relatório muda no endereço é tirar os segredos: os quatro serviços de `servicios.toml` não trazem nenhum, e por isso sua `url` sai igual à do arquivo.
 
 ## O erro que você vai ver
 
