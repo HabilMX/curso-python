@@ -39,7 +39,7 @@
 | 7 | [Пакет с команден ред](07-paquete-linea-de-comandos.md) | `revisor` като пакет | `pyproject.toml`; `python -m revisor`; `argparse`; кодове на изход (exit codes); редактируема инсталация с `pip`; `uv` като незадължителна рамка |
 | 8 | [Тестове, типове и качество](08-pruebas-tipos-calidad.md) | `revisor` с тестове | `pytest` и таблица от случаи; `tmp_path`; `monkeypatch`; постепенно типизиране с `mypy`; `ruff` |
 | 9 | [HTTP и asyncio](09-http-y-asyncio.md) | `revisor`, който проверява истински | `urllib` и `httpx`; времеви лимити (timeout); `async` и `await`; `asyncio.run` |
-| 10 | [Съвместно изпълнение с ограничения и тестове без мрежа](10-concurrencia-pruebas-sin-red.md) | `revisor`, който работи едновременно и е тестван | `TaskGroup`; `timeout`; `Semaphore`; групи от изключения; симулирана мрежа в тестовете |
+| 10 | [Конкурентност с ограничения и тестове без мрежа](10-concurrencia-pruebas-sin-red.md) | `revisor`, който работи едновременно и е тестван | `TaskGroup`; `timeout`; `Semaphore`; групи от изключения; симулирана мрежа в тестовете |
 | 11 | [Завършената програма](11-el-programa-terminado.md) | пълният `revisor`, който се инсталира | отчет в таблица и JSON; `logging`; сигурност; изграждане и инсталиране с `pipx` |
 
 В края на всеки урок има упражнения с техните решения и раздел „За допълнително четене“; източниците на това, което се твърди, са свързани в текста, там където се използват. А [дневникът](https://github.com/HabilMX/curso-python/blob/main/bg/bitacora.md) е твой: записвай там това, което ти е костало усилие.
