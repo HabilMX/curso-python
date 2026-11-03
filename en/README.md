@@ -1,6 +1,6 @@
 # Python course — from zero to a program that checks many services at once
 
-**By Dorian Chávez, founder of Hábil and integration architect.**
+**By Dorian Chávez, co-founder of Hábil and integration architect.**
 
 **Who it is for:** anyone who has never programmed, or who has copied scripts that work without knowing why. Nothing is assumed: not that you have Python installed, nor that you know what a virtual environment is. Each concept is explained when it appears, and it is explained why it exists, not only how it is written.
 

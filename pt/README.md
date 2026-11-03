@@ -1,6 +1,6 @@
 # Curso de Python — do zero a um programa que revisa muitos serviços ao mesmo tempo
 
-**Por Dorian Chávez, fundador da Hábil e arquiteto de integração.**
+**Por Dorian Chávez, cofundador da Hábil e arquiteto de integração.**
 
 **Para quem é:** quem nunca programou, ou já copiou scripts que funcionam sem saber por quê. Nada é pressuposto: nem que você tenha o Python instalado, nem que saiba o que é um ambiente virtual. Cada conceito é explicado quando aparece, e se explica por que ele existe, e não só como se escreve.
 
